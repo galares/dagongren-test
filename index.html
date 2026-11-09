@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>测测你是哪种打工人</title>
+<style>
+  :root{
+    --bg:#f6f1e9; --card:#fffdf9; --ink:#2b2622; --sub:#7a6f66; --line:#e7ddd0;
+    --accent:#e2603a; --accent-soft:#fbe3d9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    -webkit-tap-highlight-color:transparent}
+  .wrap{max-width:440px;margin:0 auto;padding:20px 16px 40px;min-height:100vh;display:flex;flex-direction:column}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;
+    box-shadow:0 6px 24px rgba(80,50,20,.06)}
+  .hide{display:none!important}
+  /* 首页 */
+  .cover{flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px;text-align:center}
+  .badge{display:inline-block;align-self:center;background:var(--accent-soft);color:var(--accent);
+    font-size:13px;padding:4px 12px;border-radius:99px;font-weight:600}
+  .cover h1{font-size:34px;line-height:1.25;letter-spacing:1px}
+  .cover h1 em{font-style:normal;color:var(--accent)}
+  .cover p{color:var(--sub);font-size:15px;line-height:1.7}
+  .types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+  .types span{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:8px 0;font-size:13px;color:var(--sub)}
+  .btn{display:block;width:100%;border:0;border-radius:14px;background:var(--accent);color:#fff;
+    font-size:17px;font-weight:700;padding:15px;cursor:pointer;transition:transform .1s}
+  .btn:active{transform:scale(.98)}
+  .btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+  /* 答题 */
+  .bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 18px}
+  .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+  .qmeta{display:flex;justify-content:space-between;color:var(--sub);font-size:13px}
+  .qtext{font-size:21px;line-height:1.5;font-weight:700;margin-bottom:18px}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:14px;
+    padding:14px 14px;font-size:15.5px;line-height:1.5;color:var(--ink);cursor:pointer;font-family:inherit}
+  .opt:hover{border-color:var(--accent)}
+  .opt.on{border-color:var(--accent);background:var(--accent-soft)}
+  .back{margin-top:16px;background:none;border:0;color:var(--sub);font-size:14px;cursor:pointer;align-self:flex-start}
+  /* 结果 */
+  .res-top{text-align:center;padding-top:6px}
+  .res-top small{color:var(--sub);font-size:13px}
+  .res-icon{width:84px;height:84px;margin:12px auto 8px;border-radius:24px;display:grid;place-items:center;
+    font-size:40px;font-weight:800;color:#fff}
+  .res-name{font-size:30px;font-weight:800;letter-spacing:2px}
+  .res-tag{color:var(--accent);font-weight:600;margin-top:6px}
+  .res-desc{font-size:15px;line-height:1.8;margin:16px 0 4px;color:#3d3631}
+  .sec{margin-top:14px}
+  .sec h3{font-size:14px;color:var(--sub);font-weight:600;margin-bottom:6px}
+  .sec p{font-size:15px;line-height:1.7}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chips span{background:var(--accent-soft);color:var(--accent);font-size:13px;padding:4px 10px;border-radius:99px}
+  .dist{display:flex;flex-direction:column;gap:7px}
+  .row{display:grid;grid-template-columns:80px 1fr 38px;align-items:center;gap:8px;font-size:13px}
+  .row .t{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+  .row .t i{display:block;height:100%;border-radius:99px}
+  .row b{text-align:right;font-weight:600;color:var(--sub)}
+  .tip{margin-top:16px;text-align:center;color:var(--sub);font-size:13px}
+  .actions{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+  footer{margin-top:22px;text-align:center;color:#a99d92;font-size:12px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 首页 -->
+  <section id="cover" class="cover">
+    <span class="badge">12 道题 · 约 2 分钟</span>
+    <h1>测测你是<br>哪种<em>打工人</em></h1>
+    <p>同样是上班，有人冲锋陷阵，有人稳如老狗。<br>凭第一反应选，别想太久。</p>
+    <div class="types">
+      <span>卷王</span><span>摸鱼大师</span><span>老黄牛</span>
+      <span>气氛组</span><span>边界感战士</span><span>隐形高手</span>
+    </div>
+    <button class="btn" id="startBtn">开始测试</button>
+  </section>
+
+  <!-- 答题 -->
+  <section id="quiz" class="hide" style="display:flex;flex-direction:column">
+    <div class="qmeta"><span id="qnum"></span><span>凭直觉选</span></div>
+    <div class="bar"><i id="prog"></i></div>
+    <div class="card">
+      <div class="qtext" id="qtext"></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <button class="back" id="backBtn">‹ 上一题</button>
+  </section>
+
+  <!-- 结果 -->
+  <section id="result" class="hide">
+    <div class="card">
+      <div class="res-top">
+        <small>你的打工人类型是</small>
+        <div class="res-icon" id="rIcon"></div>
+        <div class="res-name" id="rName"></div>
+        <div class="res-tag" id="rTag"></div>
+      </div>
+      <p class="res-desc" id="rDesc"></p>
+      <div class="sec"><h3>你的闪光点</h3><div class="chips" id="rGood"></div></div>
+      <div class="sec"><h3>要小心的地方</h3><p id="rCare"></p></div>
+      <div class="sec"><h3>最佳工作搭子</h3><p id="rMate"></p></div>
+      <div class="sec"><h3>给你的一句话</h3><p id="rTip"></p></div>
+      <div class="sec"><h3>你的成分构成</h3><div class="dist" id="rDist"></div></div>
+    </div>
+    <p class="tip">长按或截图保存，发给同事看看他们是哪一型</p>
+    <div class="actions">
+      <button class="btn ghost" id="againBtn">再测一次</button>
+    </div>
+  </section>
+
+  <footer>本测试仅供娱乐，不构成任何心理评估或职业建议</footer>
+</div>
+
+<script>
+const TYPES = {
+  juan:{name:"卷王",icon:"卷",color:"#e2603a",tag:"永远在冲刺的那个人",
+    desc:"你对自己要求很高，事情交到你手上就一定有结果。别人还在想要不要做，你已经做完并且准备了 B 方案。你的成长速度很快，也常常是团队里最先被看见的人。",
+    good:["执行力强","学得快","结果导向","靠得住"],
+    care:"别把所有人的标准都拉到你的水平，偶尔也给自己放个假，身体是第一生产力。",
+    mate:"隐形高手。你们都想把事做好，一个往前冲，一个把关细节。",
+    tip:"跑得快很好，跑得久更好。"},
+  mo:{name:"摸鱼大师",icon:"鱼",color:"#3a9ad9",tag:"效率派，能省力就不费劲",
+    desc:"你不是不干活，你是讨厌无意义的忙碌。同样的活你总能找到更省事的做法，剩下的时间刚好用来喝杯奶茶。工作和生活，你分得很清楚。",
+    good:["会找捷径","心态好","不内耗","生活有滋味"],
+    care:"关键节点还是要露个脸，别让领导只记得你的工位零食。",
+    mate:"卷王。他负责往前冲，你负责告诉他哪条路更近。",
+    tip:"省下来的力气，记得用在真正喜欢的事上。"},
+  niu:{name:"老黄牛",icon:"牛",color:"#8a6a3f",tag:"有事找你，准没错",
+    desc:"你踏实、负责、随叫随到，团队里很多事最后都落到你手上，而你也总能接住。大家嘴上不一定说，心里都知道离不开你。",
+    good:["靠谱","耐心","细致","有担当"],
+    care:"不是所有忙都要帮。学会说一句「我手上还有事」，你的时间也很值钱。",
+    mate:"边界感战士。他能教你怎么拒绝，你能让他看到团队的温度。",
+    tip:"你值得被看见，做了的事要说出来。"},
+  qi:{name:"气氛组",icon:"嗨",color:"#e0a21b",tag:"有你在，上班都没那么难",
+    desc:"你是办公室的润滑剂，谁和谁都能聊上两句，冷场时总有你来接梗。很多跨部门的事，靠你一句「我认识那边的人」就解决了。",
+    good:["人缘好","会沟通","乐观","消息灵通"],
+    care:"热闹之外也留点时间给自己的正事，别让聊天把工作日填满。",
+    mate:"老黄牛。他埋头干活，你帮他把成果让更多人知道。",
+    tip:"好人缘是长期资产，继续保持。"},
+  bian:{name:"边界感战士",icon:"界",color:"#6a5acd",tag:"该干的干好，不该揽的不揽",
+    desc:"你很清楚什么是自己的事，什么不是。下班就是下班，周末就是周末，被冒犯了也会体面地讲清楚。有人说你不好惹，其实你只是不想被浪费。",
+    good:["有原则","不内耗","表达清楚","效率高"],
+    care:"边界清楚是好事，偶尔多帮同事一次，会让你的话更有分量。",
+    mate:"气氛组。他帮你缓和气氛，你帮他守住底线。",
+    tip:"能拒绝的人，答应的事才更让人放心。"},
+  yin:{name:"隐形高手",icon:"隐",color:"#2f8f6b",tag:"话不多，但活很漂亮",
+    desc:"你不爱抢风头，开会时也不常发言，但交出来的东西总是挑不出毛病。你相信作品会说话，喜欢把一件事琢磨透。",
+    good:["专注","专业","稳","可信赖"],
+    care:"好东西也需要被看见。适当讲讲你的思路，别让功劳悄悄被别人领走。",
+    mate:"卷王。他推进度，你保质量，组合起来无敌。",
+    tip:"安静的人，往往走得最远。"}
+};
+const ORDER = ["juan","niu","yin","bian","qi","mo"]; // 平分时的先后
+
+const QS = [
+  ["周一早上闹钟响了，你的第一反应是？",[
+    ["立刻起床，今天的待办已经在脑子里排好了","juan"],
+    ["再睡五分钟，踩点到也是到","mo"],
+    ["先看一眼工作群有没有人找我","niu"],
+    ["打开手机看看群里有什么新鲜事","qi"]]],
+  ["领导在下班前五分钟说「有个小事」：",[
+    ["马上弄，顺便把明天的也准备了","juan"],
+    ["小事的话，明早做应该也来得及","mo"],
+    ["先问清楚多急，不急就明天","bian"],
+    ["默默做完再走，不想多说","niu"]]],
+  ["开会的时候，你通常在：",[
+    ["抢着发言，方案准备了好几版","juan"],
+    ["认真记笔记，会后整理纪要","niu"],
+    ["负责暖场和接梗","qi"],
+    ["安静听，只在关键处说一句","yin"]]],
+  ["同事找你帮忙一件不归你管的事：",[
+    ["帮，正好学点新东西","juan"],
+    ["能帮就帮，帮完自己再加班","niu"],
+    ["说清楚这次是帮忙，下不为例","bian"],
+    ["给他介绍一个更合适的人","qi"]]],
+  ["你的工位最像：",[
+    ["贴满便利贴和计划表","juan"],
+    ["零食、靠枕、小风扇一应俱全","mo"],
+    ["干干净净，看不出主人是谁","yin"],
+    ["同事们经常来聊天的据点","qi"]]],
+  ["午休时间你一般在：",[
+    ["边吃边回消息","niu"],
+    ["准时干饭，雷打不动","bian"],
+    ["找个角落刷视频","mo"],
+    ["一个人看看书或学点东西","yin"]]],
+  ["被不太合理地批评了，你会：",[
+    ["当场把事实讲清楚","bian"],
+    ["回去复盘，下次做到无可挑剔","juan"],
+    ["嘴上说好，心里记一笔","yin"],
+    ["找同事吐槽完就好了","qi"]]],
+  ["周末工作群响了：",[
+    ["秒回","niu"],
+    ["看到了，周一再说","bian"],
+    ["开了免打扰，根本没看到","mo"],
+    ["瞄一眼，真急的才回","yin"]]],
+  ["你理想中的工作状态是：",[
+    ["不断升级，越做越大","juan"],
+    ["钱多事少离家近","mo"],
+    ["大家相处愉快，每天开开心心","qi"],
+    ["能把一件事做到极致","yin"]]],
+  ["写年终总结时，你会：",[
+    ["数据、成果、明年规划一样不落","juan"],
+    ["顺便感谢帮过忙的同事","qi"],
+    ["做了什么写什么，加的班也写上","niu"],
+    ["能少写就少写，挑重点","mo"]]],
+  ["同事提起你，最可能说：",[
+    ["「有事找他准没错」","niu"],
+    ["「他话不多，但东西靠谱」","yin"],
+    ["「跟他一起上班很开心」","qi"],
+    ["「他很有原则」","bian"]]],
+  ["如果明天突然中了一百万：",[
+    ["照常上班，钱拿去投资自己","juan"],
+    ["先请一周假再说","mo"],
+    ["请大家吃顿好的","qi"],
+    ["低调，谁也不告诉","yin"]]]
+];
+
+const $ = id => document.getElementById(id);
+let cur = 0, ans = [];
+
+function show(id){ ["cover","quiz","result"].forEach(s=>$(s).classList.toggle("hide", s!==id)); window.scrollTo(0,0); }
+
+function renderQ(){
+  const [q, opts] = QS[cur];
+  $("qnum").textContent = `第 ${cur+1} / ${QS.length} 题`;
+  $("prog").style.width = (cur/QS.length*100)+"%";
+  $("qtext").textContent = q;
+  $("opts").innerHTML = "";
+  opts.forEach(([t,k],i)=>{
+    const b = document.createElement("button");
+    b.className = "opt" + (ans[cur]===k ? " on" : "");
+    b.textContent = "ABCD"[i] + ". " + t;
+    b.onclick = () => { ans[cur]=k; b.classList.add("on"); setTimeout(next, 180); };
+    $("opts").appendChild(b);
+  });
+  $("backBtn").style.visibility = cur ? "visible" : "hidden";
+}
+
+function next(){
+  if (cur < QS.length-1){ cur++; renderQ(); } else { renderResult(); }
+}
+
+function renderResult(){
+  const score = Object.fromEntries(ORDER.map(k=>[k,0]));
+  ans.forEach(k=>score[k]++);
+  const top = ORDER.reduce((a,b)=> score[b]>score[a] ? b : a);
+  const T = TYPES[top];
+  $("rIcon").textContent = T.icon; $("rIcon").style.background = T.color;
+  $("rName").textContent = T.name; $("rName").style.color = T.color;
+  $("rTag").textContent = T.tag;  $("rTag").style.color = T.color;
+  $("rDesc").textContent = T.desc;
+  $("rGood").innerHTML = T.good.map(g=>`<span style="color:${T.color};background:${T.color}1a">${g}</span>`).join("");
+  $("rCare").textContent = T.care;
+  $("rMate").textContent = T.mate;
+  $("rTip").textContent = T.tip;
+  const sorted = [...ORDER].sort((a,b)=>score[b]-score[a]);
+  $("rDist").innerHTML = sorted.map(k=>{
+    const p = Math.round(score[k]/QS.length*100);
+    return `<div class="row"><span>${TYPES[k].name}</span><div class="t"><i style="width:${p}%;background:${TYPES[k].color}"></i></div><b>${p}%</b></div>`;
+  }).join("");
+  show("result");
+}
+
+$("startBtn").onclick = () => { cur=0; ans=[]; show("quiz"); renderQ(); };
+$("backBtn").onclick = () => { if(cur>0){ cur--; renderQ(); } };
+$("againBtn").onclick = () => { cur=0; ans=[]; show("cover"); };
+</script>
+</body>
+</html>
