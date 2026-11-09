@@ -24,10 +24,12 @@
   .cover h1{font-size:34px;line-height:1.25;letter-spacing:1px}
   .cover h1 em{font-style:normal;color:var(--accent)}
   .cover p{color:var(--sub);font-size:15px;line-height:1.7}
-  .types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
-  .types span{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:8px 0;font-size:13px;color:var(--sub)}
+  .types{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px}
+  .types span{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:8px 2px;font-size:13px;color:var(--sub);white-space:nowrap}
+  .feat{display:flex;justify-content:center;gap:14px;color:var(--sub);font-size:13px}
+  .feat b{color:var(--accent);font-weight:700}
   .btn{display:block;width:100%;border:0;border-radius:14px;background:var(--accent);color:#fff;
-    font-size:17px;font-weight:700;padding:15px;cursor:pointer;transition:transform .1s}
+    font-size:17px;font-weight:700;padding:15px;cursor:pointer;transition:transform .1s;font-family:inherit}
   .btn:active{transform:scale(.98)}
   .btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
   /* 答题 */
@@ -40,26 +42,34 @@
     padding:14px 14px;font-size:15.5px;line-height:1.5;color:var(--ink);cursor:pointer;font-family:inherit}
   .opt:hover{border-color:var(--accent)}
   .opt.on{border-color:var(--accent);background:var(--accent-soft)}
-  .back{margin-top:16px;background:none;border:0;color:var(--sub);font-size:14px;cursor:pointer;align-self:flex-start}
-  /* 结果 */
-  .res-top{text-align:center;padding-top:6px}
-  .res-top small{color:var(--sub);font-size:13px}
-  .res-icon{width:84px;height:84px;margin:12px auto 8px;border-radius:24px;display:grid;place-items:center;
-    font-size:40px;font-weight:800;color:#fff}
-  .res-name{font-size:30px;font-weight:800;letter-spacing:2px}
-  .res-tag{color:var(--accent);font-weight:600;margin-top:6px}
-  .res-desc{font-size:15px;line-height:1.8;margin:16px 0 4px;color:#3d3631}
+  .back{margin-top:16px;background:none;border:0;color:var(--sub);font-size:14px;cursor:pointer;align-self:flex-start;font-family:inherit}
+  /* 结果卡（一屏可截图） */
+  .share{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px 16px 12px;
+    text-align:center;box-shadow:0 6px 24px rgba(80,50,20,.08);overflow:hidden;position:relative}
+  .share::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--tc,var(--accent))}
+  .share small{display:block;color:var(--sub);font-size:12.5px;margin-top:4px}
+  .res-icon{width:52px;height:52px;margin:8px auto 4px;border-radius:16px;display:grid;place-items:center;
+    font-size:26px;font-weight:800;color:#fff}
+  .res-name{font-size:38px;font-weight:800;letter-spacing:3px;line-height:1.2}
+  .res-tag{font-weight:600;margin-top:4px;font-size:15px}
+  .kw{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .kw span{font-size:13px;padding:3px 11px;border-radius:99px;font-weight:600}
+  .radar{display:block;width:100%;max-width:290px;height:auto;margin:6px auto 0}
+  .share-foot{margin-top:8px;color:#a99d92;font-size:11.5px;letter-spacing:1px}
+  .tip{margin-top:12px;text-align:center;color:var(--sub);font-size:13px}
+  /* 详情 */
+  .detail{margin-top:14px}
+  .res-desc{font-size:15px;line-height:1.8;color:#3d3631}
   .sec{margin-top:14px}
   .sec h3{font-size:14px;color:var(--sub);font-weight:600;margin-bottom:6px}
   .sec p{font-size:15px;line-height:1.7}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
-  .chips span{background:var(--accent-soft);color:var(--accent);font-size:13px;padding:4px 10px;border-radius:99px}
+  .chips span{font-size:13px;padding:4px 10px;border-radius:99px}
   .dist{display:flex;flex-direction:column;gap:7px}
   .row{display:grid;grid-template-columns:80px 1fr 38px;align-items:center;gap:8px;font-size:13px}
   .row .t{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
   .row .t i{display:block;height:100%;border-radius:99px}
   .row b{text-align:right;font-weight:600;color:var(--sub)}
-  .tip{margin-top:16px;text-align:center;color:var(--sub);font-size:13px}
   .actions{display:flex;flex-direction:column;gap:10px;margin-top:16px}
   footer{margin-top:22px;text-align:center;color:#a99d92;font-size:12px;line-height:1.6}
 </style>
@@ -69,13 +79,11 @@
 
   <!-- 首页 -->
   <section id="cover" class="cover">
-    <span class="badge">12 道题 · 约 2 分钟</span>
+    <span class="badge">24 道题 · 约 4 分钟</span>
     <h1>测测你是<br>哪种<em>打工人</em></h1>
     <p>同样是上班，有人冲锋陷阵，有人稳如老狗。<br>凭第一反应选，别想太久。</p>
-    <div class="types">
-      <span>卷王</span><span>摸鱼大师</span><span>老黄牛</span>
-      <span>气氛组</span><span>边界感战士</span><span>隐形高手</span>
-    </div>
+    <div class="types" id="coverChips"></div>
+    <div class="feat"><span><b>8</b> 种类型</span><span><b>6</b> 维雷达图</span><span><b>1</b> 张结果卡</span></div>
     <button class="btn" id="startBtn">开始测试</button>
   </section>
 
@@ -92,21 +100,25 @@
 
   <!-- 结果 -->
   <section id="result" class="hide">
-    <div class="card">
-      <div class="res-top">
-        <small>你的打工人类型是</small>
-        <div class="res-icon" id="rIcon"></div>
-        <div class="res-name" id="rName"></div>
-        <div class="res-tag" id="rTag"></div>
-      </div>
+    <div class="share" id="share">
+      <small>你的打工人类型是</small>
+      <div class="res-icon" id="rIcon"></div>
+      <div class="res-name" id="rName"></div>
+      <div class="res-tag" id="rTag"></div>
+      <div class="kw" id="rKw"></div>
+      <svg class="radar" id="rRadar" viewBox="0 0 300 215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="六维雷达图"></svg>
+      <div class="share-foot">测测你是哪种打工人</div>
+    </div>
+    <p class="tip">↑ 截这一屏发朋友圈，看看朋友是哪一型</p>
+    <div class="card detail">
       <p class="res-desc" id="rDesc"></p>
       <div class="sec"><h3>你的闪光点</h3><div class="chips" id="rGood"></div></div>
+      <div class="sec"><h3>你的六维小结</h3><p id="rDim"></p></div>
       <div class="sec"><h3>要小心的地方</h3><p id="rCare"></p></div>
       <div class="sec"><h3>最佳工作搭子</h3><p id="rMate"></p></div>
       <div class="sec"><h3>给你的一句话</h3><p id="rTip"></p></div>
       <div class="sec"><h3>你的成分构成</h3><div class="dist" id="rDist"></div></div>
     </div>
-    <p class="tip">长按或截图保存，发给同事看看他们是哪一型</p>
     <div class="actions">
       <button class="btn ghost" id="againBtn">再测一次</button>
     </div>
@@ -116,113 +128,239 @@
 </div>
 
 <script>
+/*DATA-START*/
+// 维度顺序：卷度、摸鱼力、抗压值、社交能量、边界感、靠谱度
+const DIMS = ["卷度","摸鱼力","抗压值","社交能量","边界感","靠谱度"];
 const TYPES = {
   juan:{name:"卷王",icon:"卷",color:"#e2603a",tag:"永远在冲刺的那个人",
+    kw:["冲刺型","效率控","自驱满格"],
+    prof:[95,20,75,55,30,85],
     desc:"你对自己要求很高，事情交到你手上就一定有结果。别人还在想要不要做，你已经做完并且准备了 B 方案。你的成长速度很快，也常常是团队里最先被看见的人。",
     good:["执行力强","学得快","结果导向","靠得住"],
     care:"别把所有人的标准都拉到你的水平，偶尔也给自己放个假，身体是第一生产力。",
     mate:"隐形高手。你们都想把事做好，一个往前冲，一个把关细节。",
     tip:"跑得快很好，跑得久更好。"},
   mo:{name:"摸鱼大师",icon:"鱼",color:"#3a9ad9",tag:"效率派，能省力就不费劲",
+    kw:["松弛感","会省力","下班即自由"],
+    prof:[25,95,60,55,70,45],
     desc:"你不是不干活，你是讨厌无意义的忙碌。同样的活你总能找到更省事的做法，剩下的时间刚好用来喝杯奶茶。工作和生活，你分得很清楚。",
     good:["会找捷径","心态好","不内耗","生活有滋味"],
     care:"关键节点还是要露个脸，别让领导只记得你的工位零食。",
     mate:"卷王。他负责往前冲，你负责告诉他哪条路更近。",
     tip:"省下来的力气，记得用在真正喜欢的事上。"},
   niu:{name:"老黄牛",icon:"牛",color:"#8a6a3f",tag:"有事找你，准没错",
+    kw:["随叫随到","细致","默默扛事"],
+    prof:[70,15,65,45,15,95],
     desc:"你踏实、负责、随叫随到，团队里很多事最后都落到你手上，而你也总能接住。大家嘴上不一定说，心里都知道离不开你。",
     good:["靠谱","耐心","细致","有担当"],
     care:"不是所有忙都要帮。学会说一句「我手上还有事」，你的时间也很值钱。",
     mate:"边界感战士。他能教你怎么拒绝，你能让他看到团队的温度。",
     tip:"你值得被看见，做了的事要说出来。"},
   qi:{name:"气氛组",icon:"嗨",color:"#e0a21b",tag:"有你在，上班都没那么难",
+    kw:["人缘王","接梗高手","团队暖宝宝"],
+    prof:[40,60,50,98,40,50],
     desc:"你是办公室的润滑剂，谁和谁都能聊上两句，冷场时总有你来接梗。很多跨部门的事，靠你一句「我认识那边的人」就解决了。",
     good:["人缘好","会沟通","乐观","消息灵通"],
     care:"热闹之外也留点时间给自己的正事，别让聊天把工作日填满。",
     mate:"老黄牛。他埋头干活，你帮他把成果让更多人知道。",
     tip:"好人缘是长期资产，继续保持。"},
   bian:{name:"边界感战士",icon:"界",color:"#6a5acd",tag:"该干的干好，不该揽的不揽",
+    kw:["界限清楚","下班关机","讲理派"],
+    prof:[55,40,70,50,95,80],
     desc:"你很清楚什么是自己的事，什么不是。下班就是下班，周末就是周末，被冒犯了也会体面地讲清楚。有人说你不好惹，其实你只是不想被浪费。",
     good:["有原则","不内耗","表达清楚","效率高"],
     care:"边界清楚是好事，偶尔多帮同事一次，会让你的话更有分量。",
     mate:"气氛组。他帮你缓和气氛，你帮他守住底线。",
     tip:"能拒绝的人，答应的事才更让人放心。"},
   yin:{name:"隐形高手",icon:"隐",color:"#2f8f6b",tag:"话不多，但活很漂亮",
+    kw:["低调实力派","细节控","作品说话"],
+    prof:[65,35,60,15,65,92],
     desc:"你不爱抢风头，开会时也不常发言，但交出来的东西总是挑不出毛病。你相信作品会说话，喜欢把一件事琢磨透。",
     good:["专注","专业","稳","可信赖"],
     care:"好东西也需要被看见。适当讲讲你的思路，别让功劳悄悄被别人领走。",
     mate:"卷王。他推进度，你保质量，组合起来无敌。",
-    tip:"安静的人，往往走得最远。"}
+    tip:"安静的人，往往走得最远。"},
+  bing:{name:"画饼鉴定师",icon:"饼",color:"#b8447a",tag:"一口就知道这饼几成熟",
+    kw:["火眼金睛","不被带节奏","落到纸面"],
+    prof:[50,55,80,70,80,75],
+    desc:"领导讲愿景的时候，你总能在三秒内算出：这是真有预算，还是先画个圈。你不抬杠，也不躺平，只是习惯把话落到纸面上：时间、范围、谁负责。时间一长，大家发现跟你对齐过的事，后面少了很多「我以为」。",
+    good:["看得清","会提问","讲规则","有判断"],
+    care:"别让「先问清楚」变成口头禅，偶尔也给团队一点信任，有些饼是真的会熟。",
+    mate:"老黄牛。他肯干，你帮他把条件谈清楚，两个人都不吃亏。",
+    tip:"清醒不是泼冷水，是替大家把路看清。"},
+  huo:{name:"万能救火队员",icon:"火",color:"#0f7f8c",tag:"哪里冒烟，哪里就有你",
+    kw:["随叫随到","临危不乱","兜底专业户"],
+    prof:[75,25,95,70,25,85],
+    desc:"系统挂了、客户急了、文件找不到了，你总是第一个说「我看看」的人。你对突发状况有种奇怪的冷静，手边永远备着几个办法，久而久之，大家一遇到事就想起你。",
+    good:["应变快","心态稳","路子多","肯扛事"],
+    care:"总是救火，就没人去修火源。把处理办法写下来，顺便推动把根因解决掉。",
+    mate:"隐形高手。他把事做得扎实，让你少救几次火。",
+    tip:"会救火很了不起，让火少烧起来更了不起。"}
 };
-const ORDER = ["juan","niu","yin","bian","qi","mo"]; // 平分时的先后
+const ORDER = ["juan","mo","niu","qi","bian","yin","bing","huo"]; // 平分时用答案哈希决定，不偏向任何一型
 
+// 每题 4 个选项：[文字, 类型]；每个类型在 24 题里出现 12 次
 const QS = [
   ["周一早上闹钟响了，你的第一反应是？",[
-    ["立刻起床，今天的待办已经在脑子里排好了","juan"],
+    ["立刻起床，今天的待办已经在脑子里排好队了","juan"],
     ["再睡五分钟，踩点到也是到","mo"],
     ["先看一眼工作群有没有人找我","niu"],
-    ["打开手机看看群里有什么新鲜事","qi"]]],
+    ["边刷牙边想：今天又能和谁聊两句","qi"]]],
   ["领导在下班前五分钟说「有个小事」：",[
-    ["马上弄，顺便把明天的也准备了","juan"],
     ["小事的话，明早做应该也来得及","mo"],
-    ["先问清楚多急，不急就明天","bian"],
-    ["默默做完再走，不想多说","niu"]]],
-  ["开会的时候，你通常在：",[
-    ["抢着发言，方案准备了好几版","juan"],
+    ["笑着接下来，顺便问问大家要不要一起","qi"],
+    ["默默做完再走，不想多说","niu"],
+    ["先问清楚多急，不急就明天","bian"]]],
+  ["开会开到一半，你通常在：",[
+    ["看了眼时间，准时提醒大家议程超了","bian"],
     ["认真记笔记，会后整理纪要","niu"],
-    ["负责暖场和接梗","qi"],
-    ["安静听，只在关键处说一句","yin"]]],
-  ["同事找你帮忙一件不归你管的事：",[
-    ["帮，正好学点新东西","juan"],
-    ["能帮就帮，帮完自己再加班","niu"],
-    ["说清楚这次是帮忙，下不为例","bian"],
-    ["给他介绍一个更合适的人","qi"]]],
-  ["你的工位最像：",[
-    ["贴满便利贴和计划表","juan"],
-    ["零食、靠枕、小风扇一应俱全","mo"],
-    ["干干净净，看不出主人是谁","yin"],
-    ["同事们经常来聊天的据点","qi"]]],
-  ["午休时间你一般在：",[
+    ["安静听，只在关键处说一句","yin"],
+    ["负责暖场和接梗","qi"]]],
+  ["领导在会上说「今年大家一起冲，明年一起吃肉」：",[
+    ["带头鼓掌，气氛先烘起来","qi"],
+    ["低头在本子上写下自己的下一步","yin"],
+    ["在心里默默估算：这句话的含金量大概几成","bing"],
+    ["心想：先把今年的目标写成书面的","bian"]]],
+  ["周五下午四点，线上突然出了个大问题：",[
+    ["确认是不是我的范围，是就处理，不是就转接","bian"],
+    ["先安静把日志翻一遍，找到根因再开口","yin"],
+    ["撸起袖子直接上，群里喊一声「我来」","huo"],
+    ["先问清楚：这是真紧急，还是有人想显得很紧急","bing"]]],
+  ["写周报的你：",[
+    ["数据、对比、下周目标一应俱全","juan"],
+    ["内容精简，每条都是实打实的产出","yin"],
+    ["把「已完成」和「待确认」分栏，谁也别想糊弄","bing"],
+    ["想起什么写什么，主要靠周五下午的记忆抢救","huo"]]],
+  ["团建通知来了，时间是周六：",[
+    ["先问一句：这算加班吗？补不补休","bing"],
+    ["想办法优雅地「临时有事」","mo"],
+    ["报名负责后勤，反正出岔子总得有人兜底","huo"],
+    ["报名，顺便当成跟高层混脸熟的机会","juan"]]],
+  ["同事临时请假，他的活没人接：",[
+    ["我来顶，先看看哪里最急","huo"],
+    ["先看看能不能等他回来再说","mo"],
+    ["接下来，顺便把流程优化一下","juan"],
+    ["默默分一半过来，不想让别人为难","niu"]]],
+  ["午休的你一般在：",[
+    ["边吃边看行业资料","juan"],
     ["边吃边回消息","niu"],
-    ["准时干饭，雷打不动","bian"],
-    ["找个角落刷视频","mo"],
-    ["一个人看看书或学点东西","yin"]]],
-  ["被不太合理地批评了，你会：",[
-    ["当场把事实讲清楚","bian"],
-    ["回去复盘，下次做到无可挑剔","juan"],
-    ["嘴上说好，心里记一笔","yin"],
-    ["找同事吐槽完就好了","qi"]]],
-  ["周末工作群响了：",[
-    ["秒回","niu"],
-    ["看到了，周一再说","bian"],
+    ["找个角落刷视频，给自己充电","mo"],
+    ["和同事一边干饭一边交换八卦","qi"]]],
+  ["周末晚上，工作群响了：",[
     ["开了免打扰，根本没看到","mo"],
-    ["瞄一眼，真急的才回","yin"]]],
-  ["你理想中的工作状态是：",[
-    ["不断升级，越做越大","juan"],
-    ["钱多事少离家近","mo"],
-    ["大家相处愉快，每天开开心心","qi"],
-    ["能把一件事做到极致","yin"]]],
+    ["看到了，周一再说","bian"],
+    ["回个表情包，气氛上跟一下","qi"],
+    ["秒回","niu"]]],
+  ["同事找你帮一件不归你管的忙：",[
+    ["说清楚这次是帮忙，下不为例","bian"],
+    ["能帮就帮，帮完自己再加班","niu"],
+    ["帮的同时，顺手给他介绍个更合适的人","qi"],
+    ["把方法写成一份文档发给他，让他自己搞定","yin"]]],
+  ["被不太合理地批评了，你会：",[
+    ["找同事吐槽完就好了","qi"],
+    ["先听完，再问：具体是哪一条，标准是什么","bing"],
+    ["当场把事实讲清楚","bian"],
+    ["嘴上说好，回去默默把东西做到挑不出毛病","yin"]]],
+  ["有人想把一口锅甩给你：",[
+    ["不争论，默默翻出邮件，发一份说明","yin"],
+    ["笑着问一句：当时是谁拍板的","bing"],
+    ["把时间线和聊天记录一摆，事实说话","bian"],
+    ["先把问题解决了，谁的锅等好了再说","huo"]]],
+  ["你的工位最像：",[
+    ["备着充电宝、螺丝刀、创可贴、转接头","huo"],
+    ["桌上一本小本子，记着谁答应过什么","bing"],
+    ["干干净净，看不出主人是谁","yin"],
+    ["贴满便利贴和计划表","juan"]]],
+  ["领导在群里发「大家加个班，抓一下」：",[
+    ["先问：这次有没有调休或补贴","bing"],
+    ["加就加，我习惯了随时救场","huo"],
+    ["加，趁机把手上的活一次推完","juan"],
+    ["回个「收到」，然后把活拆成最小的几块慢慢磨","mo"]]],
   ["写年终总结时，你会：",[
+    ["重点写「那几次差点出事，是我兜住了」","huo"],
     ["数据、成果、明年规划一样不落","juan"],
-    ["顺便感谢帮过忙的同事","qi"],
-    ["做了什么写什么，加的班也写上","niu"],
-    ["能少写就少写，挑重点","mo"]]],
+    ["能少写就少写，挑重点","mo"],
+    ["做了什么写什么，加的班也写上","niu"]]],
   ["同事提起你，最可能说：",[
     ["「有事找他准没错」","niu"],
-    ["「他话不多，但东西靠谱」","yin"],
+    ["「他好像一直在忙，又好像一直在进步」","juan"],
     ["「跟他一起上班很开心」","qi"],
-    ["「他很有原则」","bian"]]],
+    ["「他总是很松弛，不知道怎么做到的」","mo"]]],
+  ["项目庆功宴上，你是：",[
+    ["吃好喝好，早点溜","mo"],
+    ["主持全场，敬酒金句不断","qi"],
+    ["帮忙收拾善后的那个","niu"],
+    ["露个脸，十点准时回家","bian"]]],
+  ["新同事入职第一天，你会：",[
+    ["主动带他熟悉，把坑提前告诉他","niu"],
+    ["拉他进各种群，介绍给全办公室","qi"],
+    ["先讲清楚：哪些找我，哪些找别人","bian"],
+    ["默默把常用文档整理好发给他","yin"]]],
+  ["领导说「这个需求很急，明天要」：",[
+    ["先把大家拉个群，一起想办法","qi"],
+    ["问清楚范围：明天要的是哪一版","bian"],
+    ["一个人戴上耳机，埋头做完","yin"],
+    ["确认一下：这个「明天」是真的明天，还是领导心里的明天","bing"]]],
+  ["脑子里冒出一个跳槽的念头，你会：",[
+    ["先悄悄把作品集和能力整理好","yin"],
+    ["先列清楚标准：薪资、时间、边界，哪项不能让","bian"],
+    ["先把手上的事交接清楚，再说","huo"],
+    ["先看看外面的「大饼」是不是比这边更脆","bing"]]],
   ["如果明天突然中了一百万：",[
-    ["照常上班，钱拿去投资自己","juan"],
-    ["先请一周假再说","mo"],
-    ["请大家吃顿好的","qi"],
-    ["低调，谁也不告诉","yin"]]]
+    ["低调，谁也不告诉","yin"],
+    ["先把家里和朋友的急事处理掉","huo"],
+    ["先冷静三天，什么决定都不做","bing"],
+    ["照常上班，钱拿去投资自己","juan"]]],
+  ["下面哪句话最让你头皮发麻？",[
+    ["「这个先不算工时，等项目成了再说」","bing"],
+    ["「你来看一下，系统好像挂了」","huo"],
+    ["「今年就这样，大家都放松点」","juan"],
+    ["「来来来，开个会，对齐一下」","mo"]]],
+  ["你理想中的周五下午：",[
+    ["把手头的活交代清楚，安心下班","niu"],
+    ["把下周的计划提前排好","juan"],
+    ["窗外阳光好，工位上慢慢收尾","mo"],
+    ["一切安好，没有任何紧急消息","huo"]]]
 ];
+/*DATA-END*/
 
+/*SCORE-START*/
+// ans：每题选了第几个选项（0–3）
+function typeOf(qi, oi){ return QS[qi][1][oi][1]; }
+function scoreAnswers(ans){
+  const score = Object.fromEntries(ORDER.map(k=>[k,0]));
+  ans.forEach((oi,qi)=>{ score[typeOf(qi,oi)]++; });
+  return score;
+}
+// 维度：把每个选项所属类型的维度画像累计取平均，减去 8 种画像的整体均值再放大对比度，限制在 10–96
+function calcDims(ans){
+  const sum = DIMS.map(()=>0);
+  ans.forEach((oi,qi)=>{ TYPES[typeOf(qi,oi)].prof.forEach((v,d)=>{ sum[d]+=v; }); });
+  const n = ans.length || 1;
+  return sum.map((s,d)=>{
+    const c = ORDER.reduce((t,k)=>t+TYPES[k].prof[d],0)/ORDER.length;
+    const v = 50 + (s/n - c)*4;
+    return Math.round(Math.min(96, Math.max(10, v)));
+  });
+}
+// 最高分并列时，用答案算一个固定的数来挑，不偏向任何类型
+function pickTop(score, ans){
+  const max = Math.max(...ORDER.map(k=>score[k]));
+  const tied = ORDER.filter(k=>score[k]===max);
+  if (tied.length===1) return tied[0];
+  let h = 7;
+  ans.forEach((oi,qi)=>{ h = (h*31 + (qi+1)*(oi+2)) % 100003; });
+  return tied[h % tied.length];
+}
+/*SCORE-END*/
+
+/*UI-START*/
 const $ = id => document.getElementById(id);
 let cur = 0, ans = [];
 
 function show(id){ ["cover","quiz","result"].forEach(s=>$(s).classList.toggle("hide", s!==id)); window.scrollTo(0,0); }
+
+$("coverChips").innerHTML = ORDER.map(k=>`<span>${TYPES[k].name}</span>`).join("");
 
 function renderQ(){
   const [q, opts] = QS[cur];
@@ -230,36 +368,61 @@ function renderQ(){
   $("prog").style.width = (cur/QS.length*100)+"%";
   $("qtext").textContent = q;
   $("opts").innerHTML = "";
-  opts.forEach(([t,k],i)=>{
+  opts.forEach(([t],i)=>{
     const b = document.createElement("button");
-    b.className = "opt" + (ans[cur]===k ? " on" : "");
+    b.className = "opt" + (ans[cur]===i ? " on" : "");
     b.textContent = "ABCD"[i] + ". " + t;
-    b.onclick = () => { ans[cur]=k; b.classList.add("on"); setTimeout(next, 180); };
+    b.onclick = () => { ans[cur]=i; b.classList.add("on"); setTimeout(next, 180); };
     $("opts").appendChild(b);
   });
   $("backBtn").style.visibility = cur ? "visible" : "hidden";
 }
 
 function next(){
-  if (cur < QS.length-1){ cur++; renderQ(); } else { renderResult(); }
+  if (cur < QS.length-1){ cur++; renderQ(); } else { renderResult(ans); }
 }
 
-function renderResult(){
-  const score = Object.fromEntries(ORDER.map(k=>[k,0]));
-  ans.forEach(k=>score[k]++);
-  const top = ORDER.reduce((a,b)=> score[b]>score[a] ? b : a);
+// 六维雷达图（纯 SVG）
+function radarSVG(dims, color){
+  const cx=150, cy=108, R=76, N=dims.length;
+  const pt = (i,r)=>{ const a=(-90+i*360/N)*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+  const poly = (r)=>Array.from({length:N},(_,i)=>pt(i,r).map(x=>x.toFixed(1)).join(",")).join(" ");
+  let s = "";
+  [0.33,0.66,1].forEach(f=>{ s += `<polygon points="${poly(R*f)}" fill="none" stroke="#e7ddd0" stroke-width="1"/>`; });
+  for (let i=0;i<N;i++){ const [x,y]=pt(i,R); s += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#e7ddd0" stroke-width="1"/>`; }
+  const dp = dims.map((v,i)=>pt(i,R*v/100).map(x=>x.toFixed(1)).join(",")).join(" ");
+  s += `<polygon points="${dp}" fill="${color}" fill-opacity=".22" stroke="${color}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  dims.forEach((v,i)=>{ const [x,y]=pt(i,R*v/100); s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.5" fill="${color}"/>`; });
+  DIMS.forEach((n,i)=>{
+    const [x,y]=pt(i,R+13);
+    const anchor = Math.abs(x-cx)<4 ? "middle" : (x>cx ? "start" : "end");
+    const dy = i===0 ? -3 : (i===3 ? 10 : 4);
+    s += `<text x="${x.toFixed(1)}" y="${(y+dy).toFixed(1)}" text-anchor="${anchor}" font-size="12.5" fill="#5a4f46" font-weight="600">${n} <tspan fill="${color}">${dims[i]}</tspan></text>`;
+  });
+  return s;
+}
+
+function renderResult(answers){
+  const score = scoreAnswers(answers);
+  const top = pickTop(score, answers);
+  const dims = calcDims(answers);
   const T = TYPES[top];
+  $("share").style.setProperty("--tc", T.color);
   $("rIcon").textContent = T.icon; $("rIcon").style.background = T.color;
   $("rName").textContent = T.name; $("rName").style.color = T.color;
   $("rTag").textContent = T.tag;  $("rTag").style.color = T.color;
+  $("rKw").innerHTML = T.kw.map(g=>`<span style="color:${T.color};background:${T.color}1a">${g}</span>`).join("");
+  $("rRadar").innerHTML = radarSVG(dims, T.color);
   $("rDesc").textContent = T.desc;
   $("rGood").innerHTML = T.good.map(g=>`<span style="color:${T.color};background:${T.color}1a">${g}</span>`).join("");
+  const hi = dims.indexOf(Math.max(...dims)), lo = dims.indexOf(Math.min(...dims));
+  $("rDim").textContent = `最突出的是「${DIMS[hi]}」（${dims[hi]}），最需要留意的是「${DIMS[lo]}」（${dims[lo]}）。分数只反映这次作答的倾向，换个心情再测可能不一样。`;
   $("rCare").textContent = T.care;
   $("rMate").textContent = T.mate;
   $("rTip").textContent = T.tip;
   const sorted = [...ORDER].sort((a,b)=>score[b]-score[a]);
   $("rDist").innerHTML = sorted.map(k=>{
-    const p = Math.round(score[k]/QS.length*100);
+    const p = Math.round(score[k]/answers.length*100);
     return `<div class="row"><span>${TYPES[k].name}</span><div class="t"><i style="width:${p}%;background:${TYPES[k].color}"></i></div><b>${p}%</b></div>`;
   }).join("");
   show("result");
@@ -268,6 +431,20 @@ function renderResult(){
 $("startBtn").onclick = () => { cur=0; ans=[]; show("quiz"); renderQ(); };
 $("backBtn").onclick = () => { if(cur>0){ cur--; renderQ(); } };
 $("againBtn").onclick = () => { cur=0; ans=[]; show("cover"); };
+
+// 仅用于截图的预览参数：?demo=卷王 直接显示该类型结果；?demo=quiz 显示答题页。不带参数时完全不生效。
+(function(){
+  let d = null;
+  try { d = new URLSearchParams(location.search).get("demo"); } catch(e){}
+  if (!d) return;
+  if (d === "quiz"){ cur = 5; ans = [0,2,3,3,3]; show("quiz"); renderQ(); return; }
+  const k = ORDER.find(x=>x===d || TYPES[x].name===d);
+  if (!k) return;
+  // 能选自己这一型就选，选不到就轮流选别的，保证结果稳定
+  const fake = QS.map((q,qi)=>{ const i = q[1].findIndex(o=>o[1]===k); return i>=0 ? i : (qi%4); });
+  renderResult(fake);
+})();
+/*UI-END*/
 </script>
 </body>
 </html>
